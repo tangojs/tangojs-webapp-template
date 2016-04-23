@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>tangojs-webapp-template</title>
+    <meta name="description" content="Basic TangoJS application template.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--
+      Firefox ships with a broken implementation of the HTMLImports standard
+      - a polyfill has to be used. This patch allows to load the polyfill
+      when the dom.webcomponents.enabled flag is set to true.
+    -->
+    <script src="node_modules/html-imports-firefox-patch/patch.js"></script>
+    <script src="node_modules/webcomponents.js/HTMLImports.js"></script>
+
+    <!-- Dependencies required if you plan to use the tangojs-trend. -->
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+
+    <!-- TangoJS stack. -->
+    <script src="node_modules/tangojs-core/lib/tangojs.js"></script>
+    <script src="node_modules/tangojs-connector-local/lib/tangojs-connector-local.js"></script>
+    <script src="node_modules/tangojs-connector-local/lib/tangojs-demo-model.js"></script>
+    <script src="node_modules/tangojs-web-components/dist/tangojs-web-components.js"></script>
+
+    <!-- Include desired widgets. -->
+    <link rel="import" href="node_modules/tangojs-web-components/dist/components/tangojs-label.html">
+    <link rel="import" href="node_modules/tangojs-web-components/dist/components/tangojs-line-edit.html">
+    <link rel="import" href="node_modules/tangojs-web-components/dist/components/tangojs-command-button.html">
+    <link rel="import" href="node_modules/tangojs-web-components/dist/components/tangojs-state-led.html">
+    <link rel="import" href="node_modules/tangojs-web-components/dist/components/tangojs-trend.html">
+    <link rel="import" href="node_modules/tangojs-web-components/dist/components/tangojs-form.html">
+
+    <!--
+      Configure your connector here. Connector is the component responsible for
+      communication with TANGO infrastructure. For testing purposes a simple,
+      in-memory, mocked implementation is configured here.
+      Learn more about available connectors at <https://tangojs.github.io>.
+    -->
+    <script type="text/javascript">
+      (function (window) {
+        'use strict'
+
+        // Setup tangojs-connector-local.
+        const model = window.demoModel.createModel()
+        const conn = new window.tangojsConnectorLocal.LocalConnector(model)
+
+        // Bind desired connector to TangoJS API.
+        window.tangojs.setConnector(conn)
+      })(window)
+    </script>
+
+    <style>
+
+      /* You can style the components using standard CSS selectors. */
+
+      tangojs-trend {
+        width: 500px;
+        height: 400px;
+        display: block;
+        padding-bottom: 10px;
+      }
+
+      tangojs-line-edit {
+        display: block;
+        width: 500px;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <!--
+      TangoJS widgets are self-contained entities derived from HTMLElement.
+      You may create and manage the widget like any standard HTML element.
+      Check the list of available widgets at
+      <https://github.com/tangojs/tangojs-web-components>.
+    -->
+    <tangojs-trend
+      model="tangojs/test/dev1/sine_trend,tangojs/test/dev1/scalar"
+      poll-period="1000"
+      data-limit="20">
+    </tangojs-trend>
+
+    <script>
+    (function (window) {
+      'use strict'
+
+      const document = window.document
+
+      function initApplication () {
+
+        // You may create elements programmatically
+        // using standard DOM manipulation APIs.
+
+        const lineEdit = document.createElement('tangojs-line-edit')
+
+        lineEdit.setAttribute('model', 'tangojs/test/dev1/scalar')
+        lineEdit.pollPeriod = 1000 // some attributes have reflected properties
+        lineEdit.showName = true
+        lineEdit.showQuality = true
+
+        document.querySelector('body').appendChild(lineEdit)
+      }
+
+      if (HTMLImports && !HTMLImports.useNative) {
+        // If HTMLImports polyfill is used, custom elements are not yet upgraded
+        // when DOMContentLoaded is fired. The polyfill fires special event
+        // to indicate that all imports have been loaded.
+        // Required to work in Firefox.
+        window.addEventListener('HTMLImportsLoaded', initApplication, true)
+      } else {
+        window.addEventListener('DOMContentLoaded', initApplication, true)
+      }
+    })(window)
+    </script>
+
+  </body>
+</html>
