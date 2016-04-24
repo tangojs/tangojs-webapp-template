@@ -20,9 +20,9 @@
     <script src="node_modules/chart.js/dist/Chart.min.js"></script>
 
     <!-- TangoJS stack. -->
-    <script src="node_modules/tangojs-core/lib/tangojs.js"></script>
+    <script src="node_modules/tangojs-core/lib/tangojs-core.js"></script>
     <script src="node_modules/tangojs-connector-local/lib/tangojs-connector-local.js"></script>
-    <script src="node_modules/tangojs-connector-local/lib/tangojs-demo-model.js"></script>
+    <script src="node_modules/tangojs-connector-local/lib/demo-model.js"></script>
     <script src="node_modules/tangojs-web-components/dist/tangojs-web-components.js"></script>
 
     <!-- Include desired widgets. -->
@@ -44,11 +44,11 @@
         'use strict'
 
         // Setup tangojs-connector-local.
-        const model = window.demoModel.createModel()
-        const conn = new window.tangojsConnectorLocal.LocalConnector(model)
+        const model = window.tangojsLocalDemoModel.createModel()
+        const conn = new window.tangojs.connector.local.LocalConnector(model)
 
         // Bind desired connector to TangoJS API.
-        window.tangojs.setConnector(conn)
+        window.tangojs.core.setConnector(conn)
       })(window)
     </script>
 
