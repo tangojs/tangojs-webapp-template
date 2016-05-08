@@ -26,10 +26,9 @@
   },
   "dependencies": {
     "html-imports-firefox-patch": "github:mliszcz/html-imports-firefox-patch",
-    "tangojs-connector-local": "^0.3.0",
-    "tangojs-connector-mtango": "^0.3.0",
-    "tangojs-core": "^0.3.0",
-    "tangojs-web-components": "^0.3.0",
+    "tangojs-connector-local": "^0.4.1",
+    "tangojs-core": "^0.4.0",
+    "tangojs-web-components": "^0.4.0",
     "webcomponents.js": "^0.7.21"
   },
   "private": true
